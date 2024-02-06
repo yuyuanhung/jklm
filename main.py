@@ -76,25 +76,30 @@ while True:
         playsound("./sound/confirm.mp3", False)
 
     for word in words:
-        if expression in word and word not in used:
-            tmp.append(word)
+    if expression in word and word not in used:
+        tmp.append(word)
 
     while key != config.c:
         try:
             rnd = choice(tmp)
             tmp.remove(rnd)
-            write(rnd)
+    
+            for letter in rnd:
+                write(letter)
+                sleep(0.25)  # Add a 0.25-second delay between each letter
+                if config.sfx:
+                    playsound(f"./sound/send/{choice(listdir(r'./sound/send/'))}", False)
+    
             used.append(rnd)
-            if config.sfx:
-                playsound(f"./sound/send/{choice(listdir(r'./sound/send/'))}", False)
+    
         except IndexError:
             print(f"No more words with the letters '{expression}'")
             break
-
+    
         press_and_release("enter")
         retry += 1
         sleep(0.5)
-
+    
         key = read_key()
         press_and_release("backspace")
 
